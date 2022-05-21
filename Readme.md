@@ -68,6 +68,14 @@ We ensure that the highest bidder always pays since they have to deposit their b
 For example, if the owner expects the <b>highest</b> bid to be 10eth, he/she will set the commitmentDeposit accordingly. Let Alice be a malicious bidder who sends two seperate bids from two different accounts, x and y, with y>x=10eth. She submits a deposit of 20eth in total. During the revelation phase, she finds that the highest bid so far is 9eth. She would like to only reveal x=10eth and win at a lower bid, however that would mean losing her 10eth deposit on bid y as well, costing her x+10eth=20eth on the total transaction. The only way this is rationally feasible is if $y-x>commitmentDeposit$. As long as commitmentDeposit is > than the highest expected bid by the owner, the probability of Alice cheating is quite low.
 
 ### 3. Maximum expected gas.
+- Constructor: 1980036
+- Commit: 114262
+- Reveal (highest bidder): 168209
+- ClaimMoney (w/o errors): min. 43461. Dependant on participant's fallback function.
+
+Each participant pays a maximum of 325,932 gas + their fallback function's gas usage
+Owner pays max 2,023,497 gas + their fallback function's gas usage
+
 It is constant because time complexity of all functions is O(1).
 
 
