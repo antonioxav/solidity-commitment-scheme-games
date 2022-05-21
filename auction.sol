@@ -21,7 +21,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
     // Events
     event CommitmentDetails(address bidder, bytes32 commitment);
-    event RevelationDetails(address bidder, uint bid, bytes32 nonce, bytes32 commitmentHash);
+    event RevelationDetails(address bidder, uint bid, uint nonce, bytes32 commitmentHash);
     event CurrentHighestBidder(address winner, uint winningBid); // todo: adapt.
 
     uint public initBlock;
@@ -51,7 +51,7 @@ pragma solidity >=0.7.0 <0.9.0;
         emit CommitmentDetails(msg.sender, commitHash);
     }
 
-    function reveal(uint bid, bytes32 nonce) external payable{
+    function reveal(uint bid, uint nonce) external payable{
 
         require(block.number > commitDeadline, "Not in Revelation Phase.");
         require(block.number <= revealDeadline, "Auction over. Reclaim your deposits.");
