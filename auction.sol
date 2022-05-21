@@ -67,7 +67,7 @@ pragma solidity >=0.7.0 <0.9.0;
         bids[msg.sender] = bid;
         revealed[msg.sender] = true;
 
-        balance[owner] -= commitDeadline;
+        balance[owner] -= commitDeposit;
         balance[msg.sender] += (bid + commitDeposit);
         emit RevelationDetails(msg.sender, bid, nonce, commitments[msg.sender]);
 
