@@ -30,8 +30,10 @@ pragma solidity >=0.7.0 <0.9.0;
 
     uint public commitDeposit;
 
+    uint public timeBlock = 1;
+
     constructor(uint deposit){
-        initBlock = block.number;
+        initBlock = timeBlock;
         uint day = (24*60*60)/uint256(13);
         commitDeadline = initBlock + day;
         revealDeadline = commitDeadline + day;
@@ -39,9 +41,14 @@ pragma solidity >=0.7.0 <0.9.0;
         owner = msg.sender;
     }
 
+    function advanceTime() public {
+        uint day = (12*60*60)/uint256(13);
+        timeBlock += day;
+    }
+
     function commit(bytes32 commitHash) external payable{
         
-        require(block.number <= commitDeadline, "Commitment Phase is over.");
+        require(timeBlock <= commitDeadline, "Commitment Phase is over.");
         require(committed[msg.sender] == false, "You already committed!");
         require(commitDeposit == msg.value, "Need to deposit the commitDeposit amount");
 
@@ -55,8 +62,8 @@ pragma solidity >=0.7.0 <0.9.0;
 
     function reveal(uint bid, uint nonce) external payable{
 
-        require(block.number > commitDeadline, "Not in Revelation Phase.");
-        require(block.number <= revealDeadline, "Auction over. Reclaim your deposits.");
+        require(timeBlock > commitDeadline, "Not in Revelation Phase.");
+        require(timeBlock <= revealDeadline, "Auction over. Reclaim your deposits.");
 
         require(committed[msg.sender] == true, "You did not participate in the commitment phase.");
         require(revealed[msg.sender] == false, "You already revealed your choice.");
@@ -82,7 +89,7 @@ pragma solidity >=0.7.0 <0.9.0;
     }
 
     function claimMoney() external{
-        require(block.number > revealDeadline, "Auction still ongoing.");
+        require(timeBlock > revealDeadline, "Auction still ongoing.");
 
         uint amount = balance[msg.sender];
         balance[msg.sender] = 0;
